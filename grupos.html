@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Grupos</title>
+    <link rel="stylesheet" type="text/css" href="EstiloTabla.css" />
+  </head>
+  <body>
+    <h1>Grupos</h1>
+    <button class="regresar-button" onclick="regresarAlMenu()">
+      Regresar al Menú
+    </button>
+    <button class="limpiar-button" onclick="limpiarMemoriaLocal()">
+      Borrar todos los datos
+    </button>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre del Grupo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-grupos-body"></tbody>
+    </table>
+
+    <script src="Grupos.js"></script>
+    <script>
+      //cambiar por boton eliminar en cada fila
+      function limpiarMemoriaLocal() {
+        // Limpiar la memoria local
+        localStorage.clear();
+
+        // Mensaje de confirmación
+        alert("La memoria local se ha limpiado correctamente.");
+      }
+      function regresarAlMenu() {
+        location.href = "index.html";
+      }
+      cargarDatosGrupos();
+
+      function cargarDatosGrupos() {
+        // Obtener los grupos almacenados en la memoria local
+        var grupos = localStorage.getItem("grupos");
+
+        // Verificar si hay grupos almacenados
+        if (grupos) {
+          // Convertir los grupos a formato JSON
+          grupos = JSON.parse(grupos);
+          // Obtener la referencia al cuerpo de la tabla
+          var tablaBody = document.getElementById("tabla-grupos-body");
+
+          // Recorrer los grupos y agregar cada uno a la tabla
+          for (var i = 0; i < grupos.length; i++) {
+            var grupo = grupos[i];
+
+            // Crear una nueva fila en la tabla
+            var fila = document.createElement("tr");
+
+            // Crear celdas para cada dato del grupo
+            var celdaNombre = document.createElement("td");
+            celdaNombre.textContent = grupo.nombre;
+            fila.appendChild(celdaNombre);
+
+            var celdaAcciones = document.createElement("td");
+            celdaAcciones.innerHTML = `<a href="grupo.html?id=${i}">Ver Detalles</a>`;
+            fila.appendChild(celdaAcciones);
+
+            // Agregar la fila a la tabla
+            tablaBody.appendChild(fila);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
